@@ -1,0 +1,6 @@
+﻿__pycache__/
+*.pyc
+.venv/
+venv/
+dataset_wav/
+ket_qua/
