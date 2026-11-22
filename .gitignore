@@ -1,8 +1,7 @@
 __pycache__/
 *.pyc
-data/audio/
-features/
-results/
-stats/
 .venv/
+venv/
+dataset_wav/
+features/
 *.wav
