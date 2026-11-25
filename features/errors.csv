@@ -1,2 +1,5 @@
 audio_id,file_name,loi
-241,107535.wav,ValueError: File im lang hoan toan
+241,107535.wav,FileNotFoundError: [Errno 2] No such file or directory: 'D:\\HK1-2026\\CSDLDPT\\dataset\\CSDLDPT-N25-main\\CSDLDPT-N25-main\\data\\audio\\107535.wav'
+359,115290.wav,FileNotFoundError: [Errno 2] No such file or directory: 'D:\\HK1-2026\\CSDLDPT\\dataset\\CSDLDPT-N25-main\\CSDLDPT-N25-main\\data\\audio\\115290.wav'
+360,115292.wav,FileNotFoundError: [Errno 2] No such file or directory: 'D:\\HK1-2026\\CSDLDPT\\dataset\\CSDLDPT-N25-main\\CSDLDPT-N25-main\\data\\audio\\115292.wav'
+362,115294.wav,FileNotFoundError: [Errno 2] No such file or directory: 'D:\\HK1-2026\\CSDLDPT\\dataset\\CSDLDPT-N25-main\\CSDLDPT-N25-main\\data\\audio\\115294.wav'
