@@ -25,11 +25,18 @@ def _none(v):
     return None if pd.isna(v) else (v.item() if hasattr(v, "item") else v)
 
 
-def load(metadata_csv, features_csv, dsn=DB_DSN, reset=False):
+def load(metadata_csv, features_csv, dsn=DB_DSN, reset=False, replace=False):
     meta = pd.read_csv(metadata_csv)
     feat = pd.read_csv(features_csv)
-    meta = meta[meta["audio_id"].isin(feat["audio_id"])].copy()      # chi nap file da co dac trung
+    for frame in (meta, feat):
+        if frame["audio_id"].isna().any() or not frame["audio_id"].is_unique:
+            raise ValueError("audio_id bi thieu hoac trung")
+    missing = meta.loc[~meta["audio_id"].isin(feat["audio_id"]), "file_name"]
+    if not missing.empty or len(meta) != len(feat):
+        raise ValueError(f"Metadata va features khong khop. File thieu vector: {missing.tolist()}")
     feat = feat.set_index("audio_id").loc[meta["audio_id"]]
+    if not np.array_equal(meta["file_name"].to_numpy(), feat["file_name"].to_numpy()):
+        raise ValueError("Ten file trong metadata va features khong khop theo audio_id")
     X = feat[FEATURE_NAMES].to_numpy(dtype=np.float64)
     if not np.all(np.isfinite(X)):
         raise SystemExit("features.csv co NaN hoac vo cuc, kiem tra lai buoc trich xuat")
@@ -39,10 +46,18 @@ def load(metadata_csv, features_csv, dsn=DB_DSN, reset=False):
         raise SystemExit("Khong co file nao thuoc tap 'database'")
     mean, std, const = fit_scaler(X[is_db])
     Z = transform(X, mean, std)
+    if not all(np.isfinite(values).all() for values in (mean, std, Z)):
+        raise ValueError("Tham so hoac vector Z-score co NaN hoac vo cuc")
 
     with connect(dsn) as conn:
-        create_schema(conn, reset)
+        if not replace:
+            create_schema(conn, reset)
         with conn.cursor() as cur:
+            if replace:
+                cur.execute("LOCK TABLE audio, audio_feature, audio_feature_scaled, scaler_param "
+                            "IN SHARE ROW EXCLUSIVE MODE")
+                cur.execute("DELETE FROM audio")
+                cur.execute("DELETE FROM scaler_param")
             execute_values(cur, f"INSERT INTO audio ({','.join(AUDIO_COLS)}) VALUES %s",
                            [tuple(_none(v) for v in r) for r in meta[AUDIO_COLS].itertuples(index=False)])
             cols = ",".join(["audio_id"] + FEATURE_NAMES)
@@ -54,12 +69,12 @@ def load(metadata_csv, features_csv, dsn=DB_DSN, reset=False):
                                 "was_constant) VALUES %s",
                            [(k + 1, n, GROUP_OF[k], float(mean[k]), float(std[k]), bool(const[k]))
                             for k, n in enumerate(FEATURE_NAMES)])
-        conn.commit()
-
         with conn.cursor() as cur:                       # kiem tra
             cur.execute("SELECT (SELECT COUNT(*) FROM audio), (SELECT COUNT(*) FROM audio_feature), "
                         "(SELECT COUNT(*) FROM audio_feature_scaled), (SELECT COUNT(*) FROM scaler_param)")
             n_a, n_f, n_s, n_p = cur.fetchone()
+            if (n_a, n_f, n_s, n_p) != (len(meta), len(meta), len(meta), len(FEATURE_NAMES)):
+                raise RuntimeError("So ban ghi trong PostgreSQL khong khop voi du lieu dau vao")
             cur.execute("SELECT split, COUNT(*) FROM audio GROUP BY split ORDER BY split")
             splits = cur.fetchall()
     zd = Z[is_db]
@@ -75,6 +90,8 @@ if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--metadata", default=str(METADATA_CSV))
     ap.add_argument("--features", default=str(FEATURES_CSV))
-    ap.add_argument("--reset", action="store_true", help="xoa bang cu truoc khi nap")
+    mode = ap.add_mutually_exclusive_group()
+    mode.add_argument("--reset", action="store_true", help="xoa bang cu truoc khi nap")
+    mode.add_argument("--replace", action="store_true", help="thay du lieu trong cac bang hien co")
     a = ap.parse_args()
-    load(a.metadata, a.features, reset=a.reset)
+    load(a.metadata, a.features, reset=a.reset, replace=a.replace)
