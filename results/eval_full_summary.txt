@@ -1,0 +1,19 @@
+CSDL tim kiem: 449 file | tap test: 50 file | K lon nhat: 50
+
+Khong co nhan the loai (>= 2 the loai) trong metadata.csv: bo qua cac chi so Precision/Recall.
+Gan nhan bang build_metadata.py --labels labels.csv roi chay lai.
+B. DO HIEU QUA
+
+Cau hinh may: he_dieu_hanh=Windows-10-10.0.19045-SP0, cpu=Intel64 Family 6 Model 158 Stepping 13, GenuineIntel, so_luong_cpu=12, python=3.14.0, numpy=2.5.5, librosa=0.11.0
+Thoi gian tim kiem moi truy van (tim trong 449 file): 7.06 ms
+Thoi gian xu ly 1 file (trung vi tren 10 file): doc va tien xu ly 0.02s, trich xuat 71 chieu 0.94s
+Dung luong: WAV trung binh 1292 KB/file (662 MB cho 500 file; 500 file do tu dia, con lai uoc tinh), vector 568 byte/file (277 KB tong), nho hon khoang 2329 lan
+
+Kha nang mo rong (nhan ban vector, brute force, 1 truy van):
+ so_vector  ms_moi_truy_van  bo_nho_vector_MB
+       449             0.61              0.26
+      5000            12.55              2.84
+     20000            52.37             11.36
+     50000           173.24             28.40
+    100000           277.85             56.80
+    200000           626.20            113.60
