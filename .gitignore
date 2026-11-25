@@ -1,7 +1,29 @@
+# Python
 __pycache__/
 *.pyc
 .venv/
 venv/
+.pytest_cache/
+
+# VS Code
+.vscode/
+
+# Audio dataset
 dataset_wav/
-features/
+data/audio/
+audio.zip
 *.wav
+
+# FMA metadata
+fma_metadata/
+
+# Extracted features
+features/
+
+# Local credentials
+.env
+.env.*
+!.env.example
+
+# Nested Git repository
+CSDLDPT-N25-GIT/
