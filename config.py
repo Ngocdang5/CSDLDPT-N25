@@ -10,7 +10,7 @@ DURATION = 30         # giay, cat doan giua neu file dai hon
 MIN_SECONDS = 5.0     # file truy van ngan hon muc nay bi tu choi
 
 # ---- Duong dan
-AUDIO_DIR = Path(os.getenv("MUSIC_AUDIO_DIR", ROOT / "data" / "audio"))
+AUDIO_DIR = Path(os.getenv("MUSIC_AUDIO_DIR", ROOT / "data" / "dataset_wav"))
 METADATA_CSV = ROOT / "metadata.csv"
 FEATURES_CSV = ROOT / "features" / "features.csv"
 RESULTS_DIR = ROOT / "results"
