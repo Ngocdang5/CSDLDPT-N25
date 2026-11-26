@@ -1,0 +1,15 @@
+CSDL      : 596 file (tap database)
+Nguon     : CSV
+n_sample  : 50  seed=42
+
+=== E2. Danh gia tren tap truy van moi ngoai CSDL ===
+So file truy van : 20 / 20 thanh cong
+Khoang cach top-1 : mean=1.035  std=0.120  min=0.856  max=1.414
+Tuong dong top-1   : mean=0.493  std=0.027
+Thoi gian trich xuat : 0.57 s/file
+Thoi gian tim kiem   : 2.21 ms/file
+(Khong co nhan genre -> bo qua genre-precision@5)
+
+[E2] Da tao template cham diem nghe: eval_listening_template.csv
+     Cac thanh vien nghe va dien diem (1-5) vao cot timbre / harmony / rhythm,
+     sau do chay lai voi --score_listening results/eval_listening_template.csv

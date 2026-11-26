@@ -1,0 +1,101 @@
+query_file,rank,result_file,file_path,distance,similarity,D_A,D_B,D_C,genre
+Ambler - Video Classica - Kevin MacLeod.mp3,1,081988.wav,081988.wav,1.0607,0.4853,1.7016,0.5037,0.4755,Instrumental
+Ambler - Video Classica - Kevin MacLeod.mp3,2,114236.wav,114236.wav,1.1326,0.4689,1.6284,0.8226,0.7211,Instrumental
+Ambler - Video Classica - Kevin MacLeod.mp3,3,020366.wav,020366.wav,1.1365,0.4681,1.4732,0.8100,1.0239,Instrumental
+Ambler - Video Classica - Kevin MacLeod.mp3,4,037141.wav,037141.wav,1.1514,0.4648,1.4320,1.0653,0.8898,Instrumental
+Ambler - Video Classica - Kevin MacLeod.mp3,5,014569.wav,014569.wav,1.1648,0.4619,1.6612,0.8531,0.7635,Instrumental
+Anchors Aweigh - Band Only (alternate) - The U.S. Marine Corps Band.mp3,1,020362.wav,020362.wav,0.9030,0.5255,1.3329,0.7516,0.3237,Instrumental
+Anchors Aweigh - Band Only (alternate) - The U.S. Marine Corps Band.mp3,2,052448.wav,052448.wav,0.9644,0.5091,1.3701,0.7450,0.5982,Instrumental
+Anchors Aweigh - Band Only (alternate) - The U.S. Marine Corps Band.mp3,3,111228.wav,111228.wav,0.9806,0.5049,1.2569,0.9664,0.6094,Instrumental
+Anchors Aweigh - Band Only (alternate) - The U.S. Marine Corps Band.mp3,4,052449.wav,052449.wav,1.0193,0.4952,1.4162,0.8651,0.6025,Instrumental
+Anchors Aweigh - Band Only (alternate) - The U.S. Marine Corps Band.mp3,5,092952.wav,092952.wav,1.0227,0.4944,1.5173,0.5965,0.6927,Instrumental
+Attack of the Mole Men - Stings - Kevin MacLeod.mp3,1,111228.wav,111228.wav,0.9344,0.5170,1.2899,0.7430,0.6351,Instrumental
+Attack of the Mole Men - Stings - Kevin MacLeod.mp3,2,020362.wav,020362.wav,0.9599,0.5102,1.4466,0.7684,0.2852,Instrumental
+Attack of the Mole Men - Stings - Kevin MacLeod.mp3,3,052448.wav,052448.wav,1.0151,0.4963,1.5528,0.4757,0.6735,Instrumental
+Attack of the Mole Men - Stings - Kevin MacLeod.mp3,4,108878.wav,108878.wav,1.0574,0.4860,1.5792,0.6989,0.6101,Instrumental
+Attack of the Mole Men - Stings - Kevin MacLeod.mp3,5,014569.wav,014569.wav,1.0575,0.4860,1.5365,0.9041,0.4207,Instrumental
+Bad Ideas Distressed - Kevin MacLeod.mp3,1,121475.wav,121475.wav,1.0669,0.4838,1.6545,0.7003,0.4321,Instrumental
+Bad Ideas Distressed - Kevin MacLeod.mp3,2,020362.wav,020362.wav,1.1376,0.4678,1.5922,0.6822,0.9389,Instrumental
+Bad Ideas Distressed - Kevin MacLeod.mp3,3,014568.wav,014568.wav,1.1787,0.4590,1.5517,1.0650,0.7913,Instrumental
+Bad Ideas Distressed - Kevin MacLeod.mp3,4,121472.wav,121472.wav,1.1977,0.4550,1.8364,0.4308,0.8631,Instrumental
+Bad Ideas Distressed - Kevin MacLeod.mp3,5,052448.wav,052448.wav,1.1989,0.4548,1.8001,0.6692,0.7899,Instrumental
+Bright Wish - Kevin MacLeod.mp3,1,082915.wav,082915.wav,1.0021,0.4995,1.4319,0.9303,0.3114,Instrumental
+Bright Wish - Kevin MacLeod.mp3,2,112978.wav,112978.wav,1.0426,0.4896,1.6446,0.7033,0.2476,Instrumental
+Bright Wish - Kevin MacLeod.mp3,3,116176.wav,116176.wav,1.0574,0.4861,1.3487,1.0713,0.6224,Instrumental
+Bright Wish - Kevin MacLeod.mp3,4,112976.wav,112976.wav,1.0865,0.4793,1.6842,0.7939,0.2734,Instrumental
+Bright Wish - Kevin MacLeod.mp3,5,120309.wav,120309.wav,1.0947,0.4774,1.6505,0.8030,0.4752,Instrumental
+Circus Waltz - Silent Film Light - Kevin MacLeod.mp3,1,121475.wav,121475.wav,1.1113,0.4736,1.5456,1.0482,0.4661,Instrumental
+Circus Waltz - Silent Film Light - Kevin MacLeod.mp3,2,014568.wav,014568.wav,1.1184,0.4720,1.5886,0.8603,0.6992,Instrumental
+Circus Waltz - Silent Film Light - Kevin MacLeod.mp3,3,108879.wav,108879.wav,1.1633,0.4623,1.4656,1.2705,0.5455,Instrumental
+Circus Waltz - Silent Film Light - Kevin MacLeod.mp3,4,000853.wav,000853.wav,1.2045,0.4536,1.5399,1.1502,0.8114,International
+Circus Waltz - Silent Film Light - Kevin MacLeod.mp3,5,120325.wav,120325.wav,1.2051,0.4535,1.6804,0.8027,0.9427,Instrumental
+Comedic Juggernaut - Music to Delight - Kevin MacLeod.mp3,1,020366.wav,020366.wav,0.8561,0.5388,1.1967,0.6124,0.6256,Instrumental
+Comedic Juggernaut - Music to Delight - Kevin MacLeod.mp3,2,014569.wav,014569.wav,0.9326,0.5174,1.3254,0.6443,0.6612,Instrumental
+Comedic Juggernaut - Music to Delight - Kevin MacLeod.mp3,3,037141.wav,037141.wav,0.9834,0.5042,1.1284,0.8334,0.9662,Instrumental
+Comedic Juggernaut - Music to Delight - Kevin MacLeod.mp3,4,020361.wav,020361.wav,0.9872,0.5032,1.2694,0.6825,0.9203,Instrumental
+Comedic Juggernaut - Music to Delight - Kevin MacLeod.mp3,5,114223.wav,114223.wav,0.9982,0.5004,1.3519,0.7364,0.7870,Instrumental
+Darkness Speaks - Kevin MacLeod.mp3,1,037111.wav,037111.wav,1.4136,0.4143,2.0667,1.0934,0.7267,Instrumental
+Darkness Speaks - Kevin MacLeod.mp3,2,014572.wav,014572.wav,1.4282,0.4118,1.8879,0.8167,1.3741,Instrumental
+Darkness Speaks - Kevin MacLeod.mp3,3,118618.wav,118618.wav,1.4627,0.4061,1.8771,1.2564,1.1472,Instrumental
+Darkness Speaks - Kevin MacLeod.mp3,4,110653.wav,110653.wav,1.4731,0.4044,2.2814,0.9270,0.6676,Instrumental
+Darkness Speaks - Kevin MacLeod.mp3,5,020366.wav,020366.wav,1.4810,0.4031,2.1226,1.0107,1.0262,Instrumental
+Doh De Oh - Kevin MacLeod.mp3,1,103522.wav,103522.wav,1.0733,0.4823,1.4437,0.5470,1.0357,Instrumental
+Doh De Oh - Kevin MacLeod.mp3,2,117251.wav,117251.wav,1.0748,0.4820,1.2834,0.8754,1.0257,Instrumental
+Doh De Oh - Kevin MacLeod.mp3,3,117172.wav,117172.wav,1.0895,0.4786,1.3551,1.1101,0.7020,Instrumental
+Doh De Oh - Kevin MacLeod.mp3,4,004066.wav,004066.wav,1.1184,0.4720,1.5080,0.9945,0.6997,Folk
+Doh De Oh - Kevin MacLeod.mp3,5,020366.wav,020366.wav,1.1285,0.4698,1.4191,0.9532,0.9478,Instrumental
+Easy Lemon 30 Second - Kevin MacLeod.mp3,1,119899.wav,119899.wav,1.0324,0.4920,1.4300,0.9202,0.5531,Instrumental
+Easy Lemon 30 Second - Kevin MacLeod.mp3,2,005158.wav,005158.wav,1.0778,0.4813,1.3561,0.9942,0.8108,Folk
+Easy Lemon 30 Second - Kevin MacLeod.mp3,3,005159.wav,005159.wav,1.0802,0.4807,1.2866,1.0831,0.8197,Folk
+Easy Lemon 30 Second - Kevin MacLeod.mp3,4,120299.wav,120299.wav,1.0950,0.4773,1.4141,0.8936,0.8937,Instrumental
+Easy Lemon 30 Second - Kevin MacLeod.mp3,5,075429.wav,075429.wav,1.1069,0.4746,1.5161,0.8510,0.8078,Instrumental
+Evening Melodrama - Kevin MacLeod.mp3,1,037141.wav,037141.wav,1.0311,0.4923,1.3940,0.9563,0.5760,Instrumental
+Evening Melodrama - Kevin MacLeod.mp3,2,120769.wav,120769.wav,1.0706,0.4830,1.5945,0.7476,0.5804,Instrumental
+Evening Melodrama - Kevin MacLeod.mp3,3,117251.wav,117251.wav,1.1048,0.4751,1.4823,1.1718,0.3022,Instrumental
+Evening Melodrama - Kevin MacLeod.mp3,4,014572.wav,014572.wav,1.1317,0.4691,1.4553,0.8848,0.9703,Instrumental
+Evening Melodrama - Kevin MacLeod.mp3,5,014569.wav,014569.wav,1.1358,0.4682,1.4578,1.2443,0.4436,Instrumental
+Flighty Theme - Kevin MacLeod.mp3,1,014576.wav,014576.wav,1.1239,0.4708,1.5669,0.7265,0.8983,Instrumental
+Flighty Theme - Kevin MacLeod.mp3,2,118618.wav,118618.wav,1.1974,0.4551,1.3908,0.9989,1.1701,Instrumental
+Flighty Theme - Kevin MacLeod.mp3,3,117252.wav,117252.wav,1.2208,0.4503,1.5651,1.2080,0.7500,Instrumental
+Flighty Theme - Kevin MacLeod.mp3,4,020369.wav,020369.wav,1.2209,0.4503,1.6783,0.6561,1.1064,Instrumental
+Flighty Theme - Kevin MacLeod.mp3,5,054150.wav,054150.wav,1.2761,0.4393,1.7706,0.7065,1.1185,Instrumental
+For Mimi - Twin Musicom.mp3,1,081802.wav,081802.wav,1.0490,0.4880,1.6928,0.5893,0.2977,Instrumental
+For Mimi - Twin Musicom.mp3,2,120322.wav,120322.wav,1.0526,0.4872,1.4993,0.9578,0.3983,Instrumental
+For Mimi - Twin Musicom.mp3,3,037141.wav,037141.wav,1.0821,0.4803,1.3497,1.0161,0.8117,Instrumental
+For Mimi - Twin Musicom.mp3,4,081565.wav,081565.wav,1.1019,0.4758,1.6431,0.7915,0.5622,Instrumental
+For Mimi - Twin Musicom.mp3,5,120299.wav,120299.wav,1.1028,0.4756,1.5724,1.0033,0.4113,Instrumental
+Heavy Hunter - Audionautix.mp3,1,111873.wav,111873.wav,0.9564,0.5111,1.2968,0.8296,0.6119,Instrumental
+Heavy Hunter - Audionautix.mp3,2,111226.wav,111226.wav,0.9580,0.5107,1.2459,0.9151,0.6032,Instrumental
+Heavy Hunter - Audionautix.mp3,3,020365.wav,020365.wav,0.9734,0.5067,1.3768,0.6874,0.6890,Instrumental
+Heavy Hunter - Audionautix.mp3,4,111872.wav,111872.wav,0.9868,0.5033,1.4111,0.7290,0.6315,Instrumental
+Heavy Hunter - Audionautix.mp3,5,149712.wav,149712.wav,1.0464,0.4887,1.4151,0.7649,0.8349,Instrumental
+Jenny's Theme - Audionautix.mp3,1,103521.wav,103521.wav,0.8580,0.5382,1.3241,0.6528,0.1706,Instrumental
+Jenny's Theme - Audionautix.mp3,2,073495.wav,073495.wav,0.8908,0.5289,1.3241,0.5233,0.5943,Instrumental
+Jenny's Theme - Audionautix.mp3,3,103520.wav,103520.wav,0.9172,0.5216,1.4109,0.3852,0.6204,Instrumental
+Jenny's Theme - Audionautix.mp3,4,119830.wav,119830.wav,0.9560,0.5113,1.4311,0.6567,0.5121,Instrumental
+Jenny's Theme - Audionautix.mp3,5,149712.wav,149712.wav,0.9596,0.5103,1.2928,0.6378,0.8274,Instrumental
+Mariachi Snooze - Kevin MacLeod.mp3,1,087104.wav,087104.wav,1.0032,0.4992,1.4642,0.7658,0.5377,Instrumental
+Mariachi Snooze - Kevin MacLeod.mp3,2,020366.wav,020366.wav,1.0141,0.4965,1.3762,1.0409,0.3279,Instrumental
+Mariachi Snooze - Kevin MacLeod.mp3,3,014569.wav,014569.wav,1.0826,0.4802,1.3382,1.1662,0.6046,Instrumental
+Mariachi Snooze - Kevin MacLeod.mp3,4,004067.wav,004067.wav,1.0910,0.4782,1.5231,0.7581,0.8224,Folk
+Mariachi Snooze - Kevin MacLeod.mp3,5,050956.wav,050956.wav,1.0914,0.4782,1.5378,1.0009,0.4546,Instrumental
+News Theme 1 - Audionautix.mp3,1,050956.wav,050956.wav,0.9968,0.5008,1.5051,0.7623,0.3664,Instrumental
+News Theme 1 - Audionautix.mp3,2,120319.wav,120319.wav,1.1148,0.4729,1.5175,1.1722,0.2267,Instrumental
+News Theme 1 - Audionautix.mp3,3,120326.wav,120326.wav,1.1366,0.4680,1.4762,1.0479,0.7734,Instrumental
+News Theme 1 - Audionautix.mp3,4,080519.wav,080519.wav,1.1427,0.4667,1.5890,0.7999,0.8675,Instrumental
+News Theme 1 - Audionautix.mp3,5,020362.wav,020362.wav,1.1446,0.4663,1.4654,1.0323,0.8470,Instrumental
+Pepper's Funk - Audionautix.mp3,1,080519.wav,080519.wav,1.0648,0.4843,1.6435,0.5697,0.6132,Instrumental
+Pepper's Funk - Audionautix.mp3,2,080520.wav,080520.wav,1.0791,0.4810,1.4541,0.5975,1.0111,Instrumental
+Pepper's Funk - Audionautix.mp3,3,080517.wav,080517.wav,1.1010,0.4760,1.7441,0.5088,0.5796,Instrumental
+Pepper's Funk - Audionautix.mp3,4,014569.wav,014569.wav,1.1333,0.4688,1.4381,0.8625,1.0203,Instrumental
+Pepper's Funk - Audionautix.mp3,5,054156.wav,054156.wav,1.1581,0.4634,1.5354,0.5906,1.1479,Instrumental
+Sneaking Up - Audionautix.mp3,1,094037.wav,094037.wav,1.1373,0.4679,1.5330,1.1238,0.5172,Instrumental
+Sneaking Up - Audionautix.mp3,2,005159.wav,005159.wav,1.1486,0.4654,1.6108,1.0552,0.5001,Folk
+Sneaking Up - Audionautix.mp3,3,082915.wav,082915.wav,1.1554,0.4640,1.4618,1.1603,0.7224,Instrumental
+Sneaking Up - Audionautix.mp3,4,131918.wav,131918.wav,1.1571,0.4636,1.3221,1.4208,0.5002,Instrumental
+Sneaking Up - Audionautix.mp3,5,148112.wav,148112.wav,1.1625,0.4624,1.6497,0.8306,0.8018,Instrumental
+The Hunter - Audionautix.mp3,1,092949.wav,092949.wav,1.0292,0.4928,1.4882,0.6253,0.7561,Instrumental
+The Hunter - Audionautix.mp3,2,080518.wav,080518.wav,1.0297,0.4927,1.4402,0.7732,0.7133,Instrumental
+The Hunter - Audionautix.mp3,3,080515.wav,080515.wav,1.0358,0.4912,1.4786,0.5792,0.8349,Instrumental
+The Hunter - Audionautix.mp3,4,111223.wav,111223.wav,1.0441,0.4892,1.5688,0.6582,0.6131,Instrumental
+The Hunter - Audionautix.mp3,5,063292.wav,063292.wav,1.0604,0.4853,1.5386,0.7278,0.6904,Instrumental

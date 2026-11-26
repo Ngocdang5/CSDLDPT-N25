@@ -1,0 +1,21 @@
+query_file,genre_query,top1_file,top1_dist,top1_sim,mean_D_top5,mean_sim_top5,genre_precision@5,t_extract_s,t_search_ms,t_total_ms
+Ambler - Video Classica - Kevin MacLeod.mp3,unknown,081988.wav,1.0607,0.4853,1.1292,0.4698,,2.3891,2.4950,4810.8800
+Anchors Aweigh - Band Only (alternate) - The U.S. Marine Corps Band.mp3,unknown,020362.wav,0.9030,0.5255,0.9780,0.5058,,0.3061,2.1400,393.3500
+Attack of the Mole Men - Stings - Kevin MacLeod.mp3,unknown,111228.wav,0.9344,0.5170,1.0049,0.4991,,0.2711,2.1180,362.1900
+Bad Ideas Distressed - Kevin MacLeod.mp3,unknown,121475.wav,1.0669,0.4838,1.1560,0.4641,,0.2720,2.1020,341.2800
+Bright Wish - Kevin MacLeod.mp3,unknown,082915.wav,1.0021,0.4995,1.0567,0.4864,,0.2772,2.2370,367.2300
+Circus Waltz - Silent Film Light - Kevin MacLeod.mp3,unknown,121475.wav,1.1113,0.4736,1.1605,0.4630,,0.2670,2.1760,354.3100
+Comedic Juggernaut - Music to Delight - Kevin MacLeod.mp3,unknown,020366.wav,0.8561,0.5388,0.9515,0.5128,,0.2708,2.1040,374.3600
+Darkness Speaks - Kevin MacLeod.mp3,unknown,037111.wav,1.4136,0.4143,1.4517,0.4079,,0.2295,2.1840,289.2900
+Doh De Oh - Kevin MacLeod.mp3,unknown,103522.wav,1.0733,0.4823,1.0969,0.4769,,0.2727,2.0610,340.3300
+Easy Lemon 30 Second - Kevin MacLeod.mp3,unknown,119899.wav,1.0324,0.4920,1.0784,0.4812,,0.2676,2.1940,341.3800
+Evening Melodrama - Kevin MacLeod.mp3,unknown,037141.wav,1.0311,0.4923,1.0948,0.4775,,0.2744,2.2910,366.3000
+Flighty Theme - Kevin MacLeod.mp3,unknown,014576.wav,1.1239,0.4708,1.2078,0.4532,,0.2558,2.1540,318.6200
+For Mimi - Twin Musicom.mp3,unknown,081802.wav,1.0490,0.4880,1.0777,0.4814,,0.2709,2.0290,373.3900
+Heavy Hunter - Audionautix.mp3,unknown,111873.wav,0.9564,0.5111,0.9842,0.5041,,0.2713,2.1990,369.6300
+Jenny's Theme - Audionautix.mp3,unknown,103521.wav,0.8580,0.5382,0.9163,0.5221,,0.2784,2.4610,379.0700
+Mariachi Snooze - Kevin MacLeod.mp3,unknown,087104.wav,1.0032,0.4992,1.0565,0.4865,,0.2735,2.1530,365.2400
+News Theme 1 - Audionautix.mp3,unknown,050956.wav,0.9968,0.5008,1.1071,0.4749,,0.2346,2.0830,293.9600
+Pepper's Funk - Audionautix.mp3,unknown,080519.wav,1.0648,0.4843,1.1073,0.4747,,0.2769,2.0570,356.3900
+Sneaking Up - Audionautix.mp3,unknown,094037.wav,1.1373,0.4679,1.1522,0.4647,,0.1963,2.0380,245.1500
+The Hunter - Audionautix.mp3,unknown,092949.wav,1.0292,0.4928,1.0398,0.4903,,0.2736,2.0710,361.6400

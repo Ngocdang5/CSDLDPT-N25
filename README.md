@@ -1,87 +1,106 @@
-# He CSDL luu tru va tim kiem doan nhac khong loi (Nhom 25)
+# Hệ CSDL lưu trữ và tìm kiếm đoạn nhạc không lời (Nhóm 25)
 
-Moi doan nhac duoc bieu dien bang vector 71 chieu (7 dac trung, muc 2 bao cao). Vector luu trong PostgreSQL.
-Tim kiem: vector cua file moi duoc chuan hoa bang mean/std cua CSDL, so voi cac vector da luu bang khoang cach
-co trong so theo 3 bo (A 42 chieu, B 24 chieu, C 5 chieu), tra ve 5 file gan nhat.
+Mỗi đoạn nhạc được biểu diễn bằng vector 71 chiều (7 đặc trưng âm thanh, mục 2 báo cáo) lưu trong PostgreSQL.
+Khi tìm kiếm, vector của file truy vấn được chuẩn hóa Z-score bằng `mean`/`std` của CSDL, so sánh với các vector đã lưu theo khoảng cách có trọng số trên 3 nhóm đặc trưng (**A**: 42 chiều phổ & âm sắc, **B**: 24 chiều hòa âm, **C**: 5 chiều nhịp & năng lượng), và trả về Top-K (mặc định 5) đoạn nhạc gần nhất.
 
-## Cau truc
+## Cấu trúc dự án
 
-| File | Vai tro | Yeu cau |
+| File | Vai trò | Yêu cầu |
 |---|---|---|
-| `config.py` | Hang so (SR 22 050 Hz, 30 giay), duong dan, chuoi ket noi PostgreSQL | |
-| `audio_features.py` | Tien xu ly va trich xuat 71 chieu, ten cot, 3 bo A/B/C | 2, 3 |
-| `build_metadata.py` | Tao `metadata.csv`, chia tap `database`/`test`, bieu do thong ke | 1 |
-| `extract_all.py` | Trich xuat 71 chieu cho tat ca file (chay song song, chay tiep duoc) | 3 |
-| `scaling.py` | Chuan hoa Z-score (chieu hang so dat std = 1) | 3, 4 |
-| `db.py`, `schema.sql` | Luoc do PostgreSQL: `audio`, `audio_feature`, `audio_feature_scaled`, `scaler_param` | 3 |
-| `load_db.py` | Nap CSDL, tinh va luu tham so chuan hoa, kiem tra | 3 |
-| `queries.sql` | Truy van SQL mau de chup man hinh bao cao | 3 |
-| `search.py` | Tim top 5 (dong lenh); lop `SearchEngine` | 4 |
-| `explain_query.py` | Ket qua trung gian cua mot truy van (bang va 2 hinh) | 4b |
-| `evaluate.py` | Danh gia: tu truy hoi, so sanh trong so, thoi gian | 4c |
-| `app.py` | Giao dien demo Streamlit | 5 |
-| `audio_inspect.py` | Kiem tra sample rate, mono/stereo gia (tuy chon) | 1 |
-| `make_demo_data.py` | Sinh am thanh tong hop de thu pipeline (khong phai du lieu that) | |
-| `tests/` | pytest kiem tra bo vector, chuan hoa, khoang cach, top 5 | |
+| `config.py` | Hằng số tiền xử lý (`SR=22050`, `DURATION=30s`, `MIN_SECONDS=5s`), đường dẫn, `DATABASE_URL` | |
+| `audio_features.py` | Tiền xử lý và trích xuất vector 71 chiều, định nghĩa 3 nhóm A/B/C | 2, 3 |
+| `build_metadata.py` | Quét thư mục audio, tạo `metadata.csv` (mặc định `test_ratio=0`), xuất thống kê `stats/` | 1 |
+| `extract_all.py` | Trích xuất 71 chiều song song cho toàn bộ file; hỗ trợ chạy tiếp, kiểm tra file cũ và `--force` | 3 |
+| `scaling.py` | Chuẩn hóa Z-score (chiều hằng số đặt `std = 1`) | 3, 4 |
+| `db.py`, `schema.sql` | Lược đồ PostgreSQL (`audio`, `audio_feature`, `audio_feature_scaled`, `scaler_param`), quản lý transaction theo caller | 3 |
+| `load_db.py` | Nạp CSDL PostgreSQL, tính và lưu tham số chuẩn hóa trên tập `database`, đối chiếu số lượng | 3 |
+| `queries.sql` | Các truy vấn SQL mẫu phục vụ báo cáo | 3 |
+| `search.py` | Tìm Top-K qua CLI và lớp `SearchEngine` (kiểm tra trọng số không âm, vector 71 chiều, `k >= 1`) | 4 |
+| `explain_query.py` | Xuất kết quả trung gian của một truy vấn (bảng và biểu đồ) | 4b |
+| `evaluate.py` | Đánh giá 4 nhóm thực nghiệm: E1 (tự truy hồi nguyên bản & đoạn cắt), E2 (truy vấn mới ngoài CSDL), E3 (trọng số), E4 (hiệu năng) | 4c |
+| `app.py` | Giao diện demo Streamlit (có nút tải lại CSDL, fallback sang CSV khi DB lỗi) | 5 |
+| `audio_inspect.py` | Kiểm tra sample rate, mono/stereo giả (tùy chọn) | 1 |
+| `make_demo_data.py` | Sinh âm thanh tổng hợp để kiểm thử pipeline | |
+| `tests/test_pipeline.py` | Bộ kiểm thử `pytest` cho trích xuất, chuẩn hóa, tìm kiếm, đánh giá và nạp/truy vấn PostgreSQL | |
 
-## Cai dat
+## Cài đặt môi trường
 
-```
+```bash
 python -m venv .venv
-.venv\Scripts\activate                 (Windows)   |   source .venv/bin/activate   (Linux, macOS)
+.venv\Scripts\activate                 # Windows
+# source .venv/bin/activate            # Linux, macOS
 pip install -r requirements.txt
 ```
 
-Dung `librosa` ban 0.10 den 0.11 (da pin `<1.0`). Ban 1.0 di cung numba rat moi co the lam chet tien trinh
-o buoc tempo.
+> Lưu ý: Dùng `librosa` bản `0.10` đến `<1.0` (đã giới hạn trong `requirements.txt`).
 
-PostgreSQL:
+Thiết lập PostgreSQL và biến môi trường `DATABASE_URL` (không hardcode mật khẩu trong `config.py`):
+
+```bash
+createdb musicdb
+set DATABASE_URL=postgresql://postgres:MATKHAU@localhost:5432/musicdb      # Windows (CMD)
+# export DATABASE_URL=postgresql://postgres:MATKHAU@localhost:5432/musicdb # Linux, macOS
 ```
-createdb musicdb                          (hoac tao bang pgAdmin)
-set DATABASE_URL=postgresql://postgres:MATKHAU@localhost:5432/musicdb      (Windows)
-export DATABASE_URL=postgresql://postgres:MATKHAU@localhost:5432/musicdb   (Linux, macOS)
-```
 
-## Chay tu dau den cuoi (596 file that)
+## Quy trình chạy đầy đủ (596 file)
 
-Dat 596 file `.wav` vao `data/dataset_wav/` (co the nam trong thu muc con), hoac dat `MUSIC_AUDIO_DIR`.
+Đặt 596 file `.wav` vào `data/dataset_wav/` (hoặc đặt biến môi trường `MUSIC_AUDIO_DIR`).
 
-```
-# 1) Metadata + thong ke. Mac dinh --test_ratio 0: tat ca file vao tap tim kiem.
-#    Neu muon tach mot phan lam truy van thu, them --test_ratio 0.1. Co nhan the loai thi them --labels labels.csv
+```bash
+# 1) Tạo metadata.csv + thống kê (mặc định --test_ratio 0.0: toàn bộ 596 file vào tập database)
 python build_metadata.py --audio_dir data/dataset_wav
 
-# 2) Trich xuat 71 chieu cho ca 596 file -> features/features.csv (loi ghi vao features/errors.csv)
+# 2) Trích xuất 71 đặc trưng -> features/features.csv (lỗi ghi vào features/errors.csv)
+#    Thêm --force nếu muốn trích xuất lại toàn bộ từ đầu
 python extract_all.py --jobs 4
 
-# 3) Nap PostgreSQL (tat ca 596 file duoc luu; chuan hoa chi tinh tren tap database)
+# 3) Nạp dữ liệu vào PostgreSQL
 python load_db.py --reset
-psql -d musicdb -f queries.sql           # truy van mau cho bao cao
+psql -d musicdb -f queries.sql
 
-# 4) Tim kiem, ket qua trung gian, danh gia
+# 4) Tìm kiếm và giải thích truy vấn
 python search.py data/dataset_wav/<file>.wav
 python explain_query.py data/dataset_wav/<file>.wav
-python evaluate.py --n 100
 
-# 5) Demo
+# 5) Chạy giao diện demo
 streamlit run app.py
 ```
 
-Thu nhanh khong can PostgreSQL: them `--source csv` vao `search.py`, `explain_query.py`, `evaluate.py`,
-hoac `APP_SOURCE=csv streamlit run app.py`.
+Chạy nhanh không cần PostgreSQL: thêm `--source csv` vào `search.py`, `explain_query.py`, `evaluate.py`, hoặc chạy `APP_SOURCE=csv streamlit run app.py`.
 
-Thu pipeline bang du lieu tong hop: `python make_demo_data.py --n 60 --labels labels.csv`, roi chay lai cac buoc
-tren. Kiem tra ma: `python -m pytest -q tests`. Test PostgreSQL chi chay khi dat `TEST_DATABASE_URL` va no XOA
-cac bang cua CSDL do, nen chi tro vao mot CSDL thu rieng.
+## Đánh giá hệ thống (`evaluate.py`)
 
-## Luu y
+`evaluate.py` hỗ trợ 3 chế độ chạy (không ghi đè file tóm tắt của nhau):
 
-- Thu tu 71 cot khac file `feature_extraction.py` cu (bo A xep lien nhau); khong tron `features.csv` cu voi ban moi.
-  `mfcc_1` la MFCC 0 (13 he so, gom he so 0).
-- Tien xu ly (mono, 22 050 Hz, cat 30 giay o giua, chuan hoa dinh) dung cung mot ham cho CSDL va file truy van.
-- Do tuong dong hien thi la `1 / (1 + D)`, chi dung de xep hang va hien thi.
-- Tempo lay tu `librosa.beat.beat_track`; gia tri cuc doan (46 hoac 235 BPM) co the la loi gap doi hoac mot nua.
-- Phep tu truy hoi trong `evaluate.py` kha de (file goc phai nam trong top). Chi so "cung the loai" chi la
-  tham chieu, khong phai dap an dung cho "giong nhau".
-- Ma nay moi duoc chay thu bang am thanh tong hop (60 file) tren PostgreSQL 16. Chua chay tren 500 file that
-  cua nhom, nen chua co so lieu that nao trong thu muc nay.
+```bash
+# E1 (tự truy hồi nguyên bản & đoạn cắt 20s) + E3 (8 phương án trọng số) + E4 (hiệu năng từng công đoạn)
+# -> xuất results/eval_summary_self.txt, eval_exact_retrieval.csv, eval_segment_retrieval.csv,
+#    eval_weights.csv, eval_weights.png, eval_performance.csv
+python evaluate.py --source csv --n 50
+
+# E2 (đánh giá truy vấn mới ngoài CSDL, đặt file trong data/queries/)
+# -> xuất results/eval_summary_external.txt, eval_external_queries.csv,
+#    eval_external_top5.csv, eval_external_dist.png
+python evaluate.py --source csv --query_dir data/queries
+
+# Chạy gộp cả E1 và E2 -> xuất thêm results/eval_summary.txt
+python evaluate.py --source csv --self --query_dir data/queries
+```
+
+Tùy chọn thêm `--genre` nếu muốn chạy thêm chỉ số phụ `leave-one-out genre-precision@5` sau E1.
+
+## Kiểm thử
+
+```bash
+python -m pytest -q tests
+```
+
+- Các test đơn vị và tích hợp dùng âm thanh tổng hợp chạy trực tiếp không cần PostgreSQL.
+- Hai test PostgreSQL (`test_postgres_schema_roundtrip`, `test_postgres_load_and_search_roundtrip`) chỉ chạy khi đặt biến môi trường `TEST_DATABASE_URL` (lưu ý: test sẽ reset bảng trong CSDL thử nghiệm đó).
+
+## Ghi chú kỹ thuật
+
+- Thứ tự 71 cột cố định theo `audio_features.FEATURE_NAMES` (`mfcc_1` là MFCC 0, gồm 13 hệ số). Không trộn `features.csv` cũ có thứ tự cột khác.
+- Tiền xử lý (mono, 22 050 Hz, cắt tối đa 30 giây ở giữa, chuẩn hóa đỉnh về `[-1, 1]`) dùng chung một hàm cho cả CSDL và file truy vấn.
+- Độ tương đồng hiển thị là `1 / (1 + D)`, đơn điệu giảm theo khoảng cách `D` để xếp hạng và trực quan hóa.
+- Phép tự truy hồi (E1) dùng để kiểm tra tính đúng đắn của pipeline và độ ổn định đặc trưng, không phải độ chính xác tổng quát trên nhạc mới.

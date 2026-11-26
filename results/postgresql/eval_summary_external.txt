@@ -1,0 +1,12 @@
+CSDL      : 596 file (tap database)
+Nguon     : PostgreSQL
+
+=== E2. Danh gia tren tap truy van moi ngoai CSDL ===
+So file truy van : 20 / 20 thanh cong
+Khoang cach top-1 : mean=1.035  std=0.120  min=0.856  max=1.414
+Tuong dong top-1   : mean=0.493  std=0.027
+Thoi gian trich xuat    : 0.40 s/file
+Thoi gian tim kiem      : 2.25 ms/file
+Tong thoi gian/truy van : mean=614.6 ms  median=374.6 ms  P95=653.8 ms
+(Khong co nhan genre -> bo qua genre-precision@5)
+

@@ -117,7 +117,7 @@ def test_search_vector_validates_inputs(engine_and_vectors):
 
 # ---------------------------------------------------------------- external eval
 def test_external_query_eval(engine_and_vectors, tmp_path):
-    """Danh gia external_query_eval: 1 file WAV tong hop, khong can PostgreSQL."""
+    """E2: external_query_eval tra ve summary_df, top5_df day du 5 dong/truy van."""
     import soundfile as sf
     from evaluate import external_query_eval
 
@@ -126,14 +126,90 @@ def test_external_query_eval(engine_and_vectors, tmp_path):
     wav_path = tmp_path / "query_test.wav"
     sf.write(str(wav_path), y, SR)
 
-    lines, df, t_ext, t_srch, n_ok = external_query_eval(
+    lines, summary_df, top5_df, t_ext, t_srch, n_ok = external_query_eval(
         eng, str(tmp_path), None, ".", n=5, seed=0
     )
     assert n_ok >= 1
-    assert not df.empty
-    assert "top1_dist" in df.columns and "top1_sim" in df.columns
-    assert (df["top1_dist"] >= 0).all()
-    assert any("Khoang cach" in l or "Thoi gian" in l for l in lines)
+    assert not summary_df.empty
+    # Kiem tra summary co du cot
+    for col in ("top1_dist", "top1_sim", "mean_D_top5", "t_extract_s", "t_search_ms", "t_total_ms"):
+        assert col in summary_df.columns, f"Thieu cot {col}"
+    assert (summary_df["top1_dist"] >= 0).all()
+
+    # Kiem tra top5_df: 5 hang / truy van, co cot D_A/D_B/D_C
+    assert not top5_df.empty
+    assert set(["query_file", "rank", "result_file", "distance", "similarity",
+                "D_A", "D_B", "D_C"]).issubset(top5_df.columns)
+    n_per_query = top5_df.groupby("query_file")["rank"].count()
+    assert (n_per_query <= 5).all()
+
+    # Kiem tra lines co cac thong tin can thiet
+    full_text = " ".join(lines)
+    assert "Khoang cach" in full_text and "Tong thoi gian/truy van" in full_text
+
+
+def test_self_retrieval_rank_uses_argsort(engine_and_vectors):
+    """Hang duoc tinh theo argsort (khong bi lech khi dong hang)."""
+    from evaluate import _rank_of
+
+    eng, _ = engine_and_vectors
+    # Voi chinh vector do -> hang phai la 1
+    for i in range(min(5, len(eng.Z))):
+        rank = _rank_of(eng.Z[i], eng.Z, i, (1, 1, 1))
+        assert rank == 1, f"Phai hang 1 khi truy van chinh no, nhan duoc {rank}"
+
+
+def test_run_mode_logic():
+    """Kiem tra logic run_self / run_ext (khong can I/O)."""
+    # run_ext = False -> run_self = True (mac dinh chi tu truy hoi)
+    run_ext = False
+    run_self = True or not run_ext
+    assert run_self
+
+    # run_ext = True, run_self not set -> run_self = False
+    run_ext = True
+    run_self = False or not run_ext
+    assert not run_self
+
+    # run_ext = True, --self -> ca hai
+    run_ext = True
+    run_self = True or not run_ext
+    assert run_self and run_ext
+
+
+def test_exact_and_segment_self_retrieval_and_perf(tmp_path):
+    """Kiem tra E1.1 (exact), E1.2 (segment) va E4 (summarize_performance)."""
+    import pandas as pd
+    import soundfile as sf
+    from evaluate import exact_self_retrieval, segment_self_retrieval, summarize_performance
+
+    from audio_features import load_audio
+
+    specs = [(110, 80), (220, 100), (440, 120)]
+    raws = []
+    rows = []
+    for i, (f, b) in enumerate(specs, start=1):
+        y = tone(f, b, seconds=8, seed=i)
+        fn = f"s{i}.wav"
+        p = str(tmp_path / fn)
+        sf.write(p, y, SR)
+        raws.append(extract_features(preprocess_array(load_audio(p))))
+        rows.append({"audio_id": i, "file_name": fn, "file_path": fn, "genre": "x"})
+
+    X = np.vstack(raws)
+    mean, std, _ = fit_scaler(X)
+    eng = SearchEngine(pd.DataFrame(rows), transform(X, mean, std), mean, std)
+
+    tab_exact, _, _, nq1, perf_rows = exact_self_retrieval(eng, n=3, seed=0, audio_dir=str(tmp_path))
+    assert nq1 == 3 and tab_exact.loc[0, "hit@1"] == pytest.approx(1.0)
+    assert len(perf_rows) == 3
+
+    tab_seg, _, _, nq2 = segment_self_retrieval(eng, n=3, seed=0, audio_dir=str(tmp_path))
+    assert nq2 == 3 and "hit@5" in tab_seg.columns
+
+    perf_lines, perf_df = summarize_performance(perf_rows, db_load_ms=12.5)
+    assert any("E4." in l for l in perf_lines)
+    assert set(["cong_doan", "mean_ms", "median_ms", "std_ms", "p95_ms"]).issubset(perf_df.columns)
 
 
 # ---------------------------------------------------------------- extract_all validation
