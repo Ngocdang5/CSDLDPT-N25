@@ -10,11 +10,12 @@ Do tuong dong hien thi: 1 / (1 + D)  (don dieu giam theo D).
 """
 import argparse
 import time
+from dataclasses import dataclass
 
 import numpy as np
 import pandas as pd
 
-from audio_features import (FEATURE_NAMES, GROUP_INDEX, GROUPS, extract_features, preprocess)
+from audio_features import FEATURE_NAMES, GROUP_INDEX, GROUPS, extract_features, extract_from_file
 from config import (DB_DSN, FEATURES_CSV, GROUP_WEIGHTS, METADATA_CSV, TOP_K)
 from scaling import fit_scaler, transform
 
@@ -38,6 +39,16 @@ def group_distances(zq, Z):
 def combine(Dg, weights):
     w = normalize_weights(weights)
     return np.sqrt((Dg ** 2) @ np.array([w[g] for g in GROUPS]))
+
+
+@dataclass(frozen=True)
+class FileSearchResult:
+    matches: pd.DataFrame
+    raw: np.ndarray
+    standardized: np.ndarray
+    waveform: np.ndarray
+    extraction_seconds: float
+    search_seconds: float
 
 
 class SearchEngine:
@@ -101,9 +112,17 @@ class SearchEngine:
         return out.reset_index(drop=True)
 
     def search_file(self, path, k=TOP_K, weights=GROUP_WEIGHTS, exclude_ids=()):
-        y = preprocess(path)
-        raw, zq = self.embed(y)
-        return self.search_vector(zq, k, weights, exclude_ids), raw, zq
+        result = self.search_file_details(path, k, weights, exclude_ids)
+        return result.matches, result.raw, result.standardized
+
+    def search_file_details(self, path, k=TOP_K, weights=GROUP_WEIGHTS, exclude_ids=()):
+        started = time.perf_counter()
+        raw, waveform = extract_from_file(path, include_waveform=True)
+        extracted = time.perf_counter()
+        zq = transform(raw, self.mean, self.std)
+        matches = self.search_vector(zq, k, weights, exclude_ids)
+        return FileSearchResult(matches, raw, zq, waveform, extracted - started,
+                                time.perf_counter() - extracted)
 
 
 def parse_weights(s):
@@ -121,11 +140,11 @@ if __name__ == "__main__":
     ap.add_argument("--weights", type=parse_weights, default=(1, 1, 1))
     a = ap.parse_args()
 
-    t0 = time.time()
+    t0 = time.perf_counter()
     eng = SearchEngine.load(a.source)
-    t1 = time.time()
-    res, _, _ = eng.search_file(a.query, a.k, a.weights)
-    t2 = time.time()
+    load_seconds = time.perf_counter() - t0
+    result = eng.search_file_details(a.query, a.k, a.weights)
     pd.set_option("display.width", 200)
-    print(res.round(4).to_string(index=False))
-    print(f"\nNap CSDL {t1 - t0:.2f}s | trich xuat + tim kiem {t2 - t1:.2f}s")
+    print(result.matches.round(4).to_string(index=False))
+    print(f"\nNap CSDL {load_seconds:.3f}s | tien xu ly + trich xuat {result.extraction_seconds:.3f}s"
+          f" | chuan hoa + tim kiem {result.search_seconds:.3f}s")

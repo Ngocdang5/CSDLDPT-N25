@@ -13,8 +13,7 @@ Dau vao:
 Dau ra:
     labels.csv
     unmatched_labels.csv
-    label_statistics.csv
-
+    label_statistics.cs
 Chay:
     python create_labels.py
 """

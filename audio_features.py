@@ -102,5 +102,8 @@ def extract_features(y, sr=SR):
     return vec
 
 
-def extract_from_file(path):
-    return extract_features(preprocess(path))
+def extract_from_file(path, *, include_waveform=False):
+    """Run the file pipeline, optionally returning the samples used for extraction."""
+    y = preprocess(path)
+    raw = extract_features(y)
+    return (raw, y) if include_waveform else raw
