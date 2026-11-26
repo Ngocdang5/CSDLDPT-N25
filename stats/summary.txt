@@ -1,13 +1,17 @@
-CANH BAO: 500 file khong xac dinh duoc genre -> bo sung --labels labels.csv
-Tong so file hop le : 500
+Tong so file hop le : 596
 File bi loai        : 0
-So the loai         : 1
-Do dai (giay)       : min 30.0 | tb 30.0 | trung vi 30.0 | max 30.0 | tong 249.9 phut
-Sample rate         : 22050 Hz x500
-Dinh dang           : wav x500
-Tap chia            : database x450, test x50
+So the loai         : 6
+Do dai (giay)       : min 30.0 | tb 30.0 | trung vi 30.0 | max 30.0 | tong 297.9 phut
+Sample rate         : 22050 Hz x596
+Dinh dang           : wav x596
+Tap chia            : database x596
 
 Bang theo the loai:
-         tong  database  test  duration_tb
-genre                                     
-unknown   500       450    50        29.99
+               tong  database  test  duration_tb
+genre                                           
+Instrumental    577       577     0        29.99
+Folk             10        10     0        29.99
+Experimental      5         5     0        29.99
+Rock              2         2     0        29.98
+Electronic        1         1     0        30.00
+International     1         1     0        30.00

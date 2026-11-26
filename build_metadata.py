@@ -260,7 +260,7 @@ if __name__ == "__main__":
     ap.add_argument("--out", default="metadata.csv")
     ap.add_argument("--stats_dir", default="stats")
     ap.add_argument("--min_duration", type=float, default=5.0)
-    ap.add_argument("--test_ratio", type=float, default=0.2)
+    ap.add_argument("--test_ratio", type=float, default=0.0)
     ap.add_argument("--seed", type=int, default=42)
     a = ap.parse_args()
 

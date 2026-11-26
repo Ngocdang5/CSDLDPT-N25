@@ -15,9 +15,9 @@ METADATA_CSV = ROOT / "metadata.csv"
 FEATURES_CSV = ROOT / "features" / "features.csv"
 RESULTS_DIR = ROOT / "results"
 
-# ---- PostgreSQL: dat bien moi truong DATABASE_URL de doi, vi du
+# ---- PostgreSQL: dat bien moi truong DATABASE_URL, vi du
 #      postgresql://user:matkhau@localhost:5432/musicdb
-DB_DSN = os.getenv("DATABASE_URL", "postgresql://postgres:12345678@localhost:5432/musicdb")
+DB_DSN = os.getenv("DATABASE_URL", "postgresql://postgres@localhost:5432/musicdb")
 
 # ---- Tim kiem
 TOP_K = 5

@@ -42,25 +42,25 @@ set DATABASE_URL=postgresql://postgres:MATKHAU@localhost:5432/musicdb      (Wind
 export DATABASE_URL=postgresql://postgres:MATKHAU@localhost:5432/musicdb   (Linux, macOS)
 ```
 
-## Chay tu dau den cuoi (500 file that)
+## Chay tu dau den cuoi (596 file that)
 
-Dat 500 file `.wav` vao `data/audio/` (co the nam trong thu muc con), hoac dat `MUSIC_AUDIO_DIR`.
+Dat 596 file `.wav` vao `data/dataset_wav/` (co the nam trong thu muc con), hoac dat `MUSIC_AUDIO_DIR`.
 
 ```
-# 1) Metadata + thong ke. --test_ratio 0.1: 10% file lam truy van thu, 90% de tim kiem.
-#    --test_ratio 0: tat ca file vao tap tim kiem. Co nhan the loai thi them --labels labels.csv
-python build_metadata.py --audio_dir data/audio --test_ratio 0.1
+# 1) Metadata + thong ke. Mac dinh --test_ratio 0: tat ca file vao tap tim kiem.
+#    Neu muon tach mot phan lam truy van thu, them --test_ratio 0.1. Co nhan the loai thi them --labels labels.csv
+python build_metadata.py --audio_dir data/dataset_wav
 
-# 2) Trich xuat 71 chieu cho ca 500 file -> features/features.csv (loi ghi vao features/errors.csv)
+# 2) Trich xuat 71 chieu cho ca 596 file -> features/features.csv (loi ghi vao features/errors.csv)
 python extract_all.py --jobs 4
 
-# 3) Nap PostgreSQL (tat ca 500 file duoc luu; chuan hoa chi tinh tren tap database)
+# 3) Nap PostgreSQL (tat ca 596 file duoc luu; chuan hoa chi tinh tren tap database)
 python load_db.py --reset
 psql -d musicdb -f queries.sql           # truy van mau cho bao cao
 
 # 4) Tim kiem, ket qua trung gian, danh gia
-python search.py data/audio/<file>.wav
-python explain_query.py data/audio/<file>.wav
+python search.py data/dataset_wav/<file>.wav
+python explain_query.py data/dataset_wav/<file>.wav
 python evaluate.py --n 100
 
 # 5) Demo

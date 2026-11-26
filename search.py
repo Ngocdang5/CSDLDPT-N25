@@ -15,19 +15,32 @@ from dataclasses import dataclass
 import numpy as np
 import pandas as pd
 
-from audio_features import FEATURE_NAMES, GROUP_INDEX, GROUPS, extract_features, extract_from_file
+from audio_features import FEATURE_NAMES, GROUP_INDEX, GROUPS, N_FEATURES, extract_features, extract_from_file
 from config import (DB_DSN, FEATURES_CSV, GROUP_WEIGHTS, METADATA_CSV, TOP_K)
 from scaling import fit_scaler, transform
 
 
 def normalize_weights(w):
-    """dict hoac (A, B, C) -> dict tong bang 1."""
+    """dict hoac (A, B, C) -> dict khong am co tong bang 1."""
     if not isinstance(w, dict):
-        w = dict(zip(GROUPS, w))
-    tot = float(sum(w.values()))
+        w_list = list(w)
+        if len(w_list) != len(GROUPS):
+            raise ValueError(f"Can dung {len(GROUPS)} trong so cho cac bo {GROUPS}")
+        w = dict(zip(GROUPS, w_list))
+    elif not all(g in w for g in GROUPS):
+        raise ValueError(f"Thieu trong so cho bo {GROUPS}")
+
+    cleaned = {}
+    for g in GROUPS:
+        val = float(w[g])
+        if not np.isfinite(val) or val < 0:
+            raise ValueError(f"Trong so bo {g} phai la so huu han >= 0 (nhan duoc {w[g]})")
+        cleaned[g] = val
+
+    tot = sum(cleaned.values())
     if tot <= 0:
         raise ValueError("Tong trong so phai duong")
-    return {g: float(w[g]) / tot for g in GROUPS}
+    return {g: cleaned[g] / tot for g in GROUPS}
 
 
 def group_distances(zq, Z):
@@ -55,7 +68,14 @@ class SearchEngine:
     def __init__(self, meta, Z, mean, std):
         self.meta = meta.reset_index(drop=True)      # audio_id, file_name, file_path, genre
         self.Z = np.asarray(Z, dtype=np.float64)     # vector da chuan hoa cua tap database
-        self.mean, self.std = mean, std
+        self.mean = np.asarray(mean, dtype=np.float64)
+        self.std = np.asarray(std, dtype=np.float64)
+        if self.Z.ndim != 2 or self.Z.shape[1] != N_FEATURES:
+            raise ValueError(f"Ma tran vector Z phai co dang (n, {N_FEATURES}), nhan duoc {self.Z.shape}")
+        if len(self.meta) != len(self.Z):
+            raise ValueError("So dong meta va Z khong khop")
+        if self.mean.shape != (N_FEATURES,) or self.std.shape != (N_FEATURES,):
+            raise ValueError(f"mean/std phai co dang ({N_FEATURES},)")
 
     # ------------------------------------------------------------ nguon du lieu
     @classmethod
@@ -71,6 +91,8 @@ class SearchEngine:
                         " FROM audio a JOIN audio_feature_scaled s USING (audio_id) "
                         "WHERE a.split = 'database' ORDER BY a.audio_id")
             df = pd.DataFrame(cur.fetchall(), columns=[d[0] for d in cur.description])
+        if df.empty:
+            raise RuntimeError("Khong co ban ghi nao trong tap 'database' cua PostgreSQL")
         return cls(df[["audio_id", "file_name", "file_path", "genre"]],
                    df[FEATURE_NAMES].to_numpy(), sp["mean"].to_numpy(), sp["std"].to_numpy())
 
@@ -81,6 +103,8 @@ class SearchEngine:
         df = meta.merge(feat.drop(columns=["file_name"]), on="audio_id")
         X = df[FEATURE_NAMES].to_numpy(dtype=np.float64)
         is_db = (df["split"] == "database").to_numpy()
+        if not is_db.any():
+            raise RuntimeError("Khong co ban ghi nao trong tap 'database' cua CSV")
         mean, std, _ = fit_scaler(X[is_db])
         sel = df[is_db]
         return cls(sel[["audio_id", "file_name", "file_path", "genre"]],
@@ -97,6 +121,15 @@ class SearchEngine:
         return raw, transform(raw, self.mean, self.std)
 
     def search_vector(self, zq, k=TOP_K, weights=GROUP_WEIGHTS, exclude_ids=()):
+        k = int(k)
+        if k <= 0:
+            raise ValueError(f"k phai >= 1 (nhan duoc {k})")
+        if len(self.Z) == 0:
+            raise ValueError("CSDL rong, khong co vector de tim kiem")
+        zq = np.asarray(zq, dtype=np.float64)
+        if zq.shape != (N_FEATURES,) or not np.all(np.isfinite(zq)):
+            raise ValueError(f"Vector truy van phai co dang ({N_FEATURES},) va khong chua NaN/Inf")
+
         Dg = group_distances(zq, self.Z)
         D = combine(Dg, weights)
         order = np.argsort(D, kind="stable")

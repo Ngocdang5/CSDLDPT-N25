@@ -69,7 +69,6 @@ def create_schema(conn, reset=False):
             cur.execute("DROP TABLE IF EXISTS audio_feature_scaled, audio_feature, "
                         "scaler_param, audio CASCADE")
         cur.execute(schema_sql())
-    conn.commit()
 
 
 if __name__ == "__main__":

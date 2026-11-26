@@ -37,15 +37,26 @@ source = os.getenv("APP_SOURCE", "db")
 try:
     eng = get_engine(source)
 except Exception as e:                                   # noqa: BLE001
-    st.warning(f"Khong nap duoc nguon '{source}' ({type(e).__name__}); chuyen sang CSV.")
-    source = "csv"
-    eng = get_engine("csv")
+    if source != "csv":
+        st.warning(f"Khong nap duoc nguon '{source}' ({type(e).__name__}: {e}); chuyen sang CSV.")
+        source = "csv"
+        try:
+            eng = get_engine("csv")
+        except Exception as e2:                          # noqa: BLE001
+            st.error(f"Khong nap duoc ca PostgreSQL lan CSV: {e2}")
+            st.stop()
+    else:
+        st.error(f"Khong nap duoc nguon CSV: {e}")
+        st.stop()
 
 st.title("Tim kiem doan nhac tuong dong theo noi dung")
 st.caption(f"CSDL: {len(eng.meta)} doan nhac (nguon: {'PostgreSQL' if source == 'db' else 'CSV'}). "
            f"Vector 71 chieu: " + ", ".join(f"bo {g} {GROUP_DIMS[g]}" for g in GROUPS))
 
 with st.sidebar:
+    if st.button("Tai lai CSDL", use_container_width=True):
+        get_engine.clear()
+        st.rerun()
     st.header("Trong so cac bo")
     w = [st.slider(f"Bo {g}: {GROUP_TITLES[g]}", 0.0, 1.0, 1 / 3, 0.05) for g in GROUPS]
     if sum(w) == 0:
@@ -59,13 +70,15 @@ if up is not None:
     st.audio(up)
     with tempfile.NamedTemporaryFile(suffix=Path(up.name).suffix, delete=False) as tmp:
         tmp.write(up.getbuffer())
+        tmp_path = tmp.name
     try:
-        result = eng.search_file_details(tmp.name, int(k), tuple(w))
+        result = eng.search_file_details(tmp_path, int(k), tuple(w))
     except Exception as e:                               # noqa: BLE001
         st.error(f"Khong xu ly duoc file: {e}")
         st.stop()
     finally:
-        os.unlink(tmp.name)
+        if os.path.exists(tmp_path):
+            os.unlink(tmp_path)
 
     extraction, search = st.columns(2)
     extraction.metric("Tiền xử lý và trích xuất", f"{result.extraction_seconds:.3f} s")

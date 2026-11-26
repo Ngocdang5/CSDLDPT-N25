@@ -1,19 +1,33 @@
-CSDL tim kiem: 449 file | tap test: 50 file | K lon nhat: 50
+CSDL tim kiem: 596 file | tap test: 0 file | K lon nhat: 50
 
-Khong co nhan the loai (>= 2 the loai) trong metadata.csv: bo qua cac chi so Precision/Recall.
-Gan nhan bang build_metadata.py --labels labels.csv roi chay lai.
+So the loai: 6 | file moi the loai trong database: 1 den 577
+'Dung' = cung the loai voi truy van. The loai chi la tham chieu: cung the loai khong dong nghia giong nhau, va hai file khac the loai van co the giong nhau.
+
+Tap test rong hoac khong co truy van hop le (the loai khong co trong database): bo qua A1.
+
+A2. LEAVE-ONE-OUT TREN TAP DATABASE (594 truy van, moi file lam truy van, loai chinh no)
+                  phuong_an   P@5   R@5    AP  R-precision   MRR  hit@1  hit@5  P@5 +-95%  P@5 ngau nhien  R@5 ngau nhien  so cap trung vector
+  bang nhau (1/3, 1/3, 1/3) 0.958 0.013 0.947        0.947 0.980  0.970  0.992      0.012           0.941           0.008                    0
+uu tien A (0.5, 0.25, 0.25) 0.959 0.014 0.947        0.947 0.982  0.973  0.993      0.011           0.941           0.008                    0
+uu tien B (0.25, 0.5, 0.25) 0.956 0.013 0.946        0.947 0.978  0.965  0.992      0.012           0.941           0.008                    0
+uu tien C (0.25, 0.25, 0.5) 0.955 0.012 0.946        0.946 0.976  0.965  0.988      0.012           0.941           0.008                    0
+                   chi bo A 0.963 0.015 0.948        0.946 0.980  0.968  0.992      0.011           0.941           0.008                    0
+                   chi bo B 0.949 0.010 0.944        0.943 0.966  0.951  0.981      0.013           0.941           0.008                    0
+                   chi bo C 0.945 0.009 0.945        0.942 0.963  0.951  0.975      0.014           0.941           0.008                    0
+            Euclid 71 chieu 0.963 0.015 0.948        0.946 0.983  0.975  0.995      0.010           0.941           0.008                    0
+    bang nhau + log2(tempo) 0.958 0.013 0.947        0.947 0.980  0.970  0.992      0.011           0.941           0.008                    0
+
 B. DO HIEU QUA
 
 Cau hinh may: he_dieu_hanh=Windows-10-10.0.19045-SP0, cpu=Intel64 Family 6 Model 158 Stepping 13, GenuineIntel, so_luong_cpu=12, python=3.14.0, numpy=2.5.5, librosa=0.11.0
-Thoi gian tim kiem moi truy van (tim trong 449 file): 7.06 ms
-Thoi gian xu ly 1 file (trung vi tren 10 file): doc va tien xu ly 0.02s, trich xuat 71 chieu 0.94s
-Dung luong: WAV trung binh 1292 KB/file (662 MB cho 500 file; 500 file do tu dia, con lai uoc tinh), vector 568 byte/file (277 KB tong), nho hon khoang 2329 lan
+Thoi gian xu ly 1 file (trung vi tren 10 file): doc va tien xu ly 0.02s, trich xuat 71 chieu 0.31s
+Dung luong: WAV trung binh 1292 KB/file (789 MB cho 596 file; 596 file do tu dia, con lai uoc tinh), vector 568 byte/file (331 KB tong), nho hon khoang 2329 lan
 
 Kha nang mo rong (nhan ban vector, brute force, 1 truy van):
  so_vector  ms_moi_truy_van  bo_nho_vector_MB
-       449             0.61              0.26
-      5000            12.55              2.84
-     20000            52.37             11.36
-     50000           173.24             28.40
-    100000           277.85             56.80
-    200000           626.20            113.60
+       596             0.18              0.34
+      5000             3.79              2.84
+     20000            19.96             11.36
+     50000            71.83             28.40
+    100000           179.80             56.80
+    200000           396.85            113.60

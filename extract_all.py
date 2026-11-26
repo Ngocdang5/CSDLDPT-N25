@@ -16,6 +16,33 @@ import pandas as pd
 from audio_features import FEATURE_NAMES, extract_from_file
 from config import AUDIO_DIR, FEATURES_CSV, METADATA_CSV
 
+EXPECTED_COLS = ["audio_id", "file_name"] + FEATURE_NAMES
+
+
+def _load_existing(out_path, meta):
+    done = pd.read_csv(out_path)
+    if list(done.columns) != EXPECTED_COLS:
+        raise SystemExit(f"{out_path} khong khop cau truc {len(EXPECTED_COLS)} cot; chay lai voi --force")
+    if done["audio_id"].isna().any() or not done["audio_id"].is_unique:
+        raise SystemExit(f"{out_path} co audio_id thieu hoac trung; chay lai voi --force")
+
+    meta_names = dict(zip(meta["audio_id"], meta["file_name"]))
+    bad_names = [
+        int(aid) for aid, fn in zip(done["audio_id"], done["file_name"])
+        if aid in meta_names and meta_names[aid] != fn
+    ]
+    if bad_names:
+        raise SystemExit(
+            f"{out_path} lech file_name voi metadata.csv (vi du audio_id={bad_names[0]}); chay lai voi --force"
+        )
+
+    vals = done[FEATURE_NAMES].to_numpy(dtype=float)
+    valid = np.isfinite(vals).all(axis=1)
+    if not valid.all():
+        print(f"CANH BAO: bo qua {int((~valid).sum())} dong co NaN/vo cuc trong {out_path} de trich xuat lai.")
+        done = done.loc[valid].copy()
+    return done
+
 
 def _work(args):
     audio_id, path = args
@@ -32,6 +59,7 @@ def main():
     ap.add_argument("--out", default=str(FEATURES_CSV))
     ap.add_argument("--jobs", type=int, default=max(1, (os.cpu_count() or 2) - 1))
     ap.add_argument("--limit", type=int, default=0, help="chi chay N file dau (de thu)")
+    ap.add_argument("--force", action="store_true", help="trich xuat lai toan bo, bo qua features.csv cu")
     a = ap.parse_args()
 
     meta = pd.read_csv(a.metadata)
@@ -39,9 +67,9 @@ def main():
         meta = meta.head(a.limit)
     os.makedirs(os.path.dirname(a.out) or ".", exist_ok=True)
 
-    done = pd.DataFrame(columns=["audio_id", "file_name"] + FEATURE_NAMES)
-    if os.path.exists(a.out):
-        done = pd.read_csv(a.out)
+    done = pd.DataFrame(columns=EXPECTED_COLS)
+    if not a.force and os.path.exists(a.out):
+        done = _load_existing(a.out, meta)
     todo = meta[~meta["audio_id"].isin(done["audio_id"])]
     print(f"Tong {len(meta)} file | da co {len(done)} | can chay {len(todo)} | jobs={a.jobs}")
 
