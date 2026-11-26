@@ -4,6 +4,7 @@ Mỗi đoạn nhạc được biểu diễn bằng vector 71 chiều (7 đặc t
 Khi tìm kiếm, vector của file truy vấn được chuẩn hóa Z-score bằng `mean`/`std` của CSDL, so sánh với các vector đã lưu theo khoảng cách có trọng số trên 3 nhóm đặc trưng (**A**: 42 chiều phổ & âm sắc, **B**: 24 chiều hòa âm, **C**: 5 chiều nhịp & năng lượng), và trả về Top-K (mặc định 5) đoạn nhạc gần nhất.
 
 ## Cấu trúc dự án
+dataset: https://drive.google.com/drive/folders/18P0i92c_9bCBINH1lT3lPpJ01FulAgDB?usp=sharing
 
 | File | Vai trò | Yêu cầu |
 |---|---|---|
